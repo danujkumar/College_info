@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import re
 
-folder_path = "pages"
+folder_path = "data"
 pdf_folder = "pdf_details"
 os.makedirs(pdf_folder, exist_ok=True)
 
