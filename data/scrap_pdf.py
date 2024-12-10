@@ -45,13 +45,10 @@ def excel(pdf_files, years, location):
     wb.save(output_path)
     print(f"Model saved for {year}")
 
-# Define the root directory
 root_dir = "data"
 
-# Define the years you want to include
 years = [str(year) for year in range(2017, 2025)]
 
-# Initialize the list
 pdf_list = []
 
 for main_category in os.listdir(root_dir):
@@ -78,9 +75,3 @@ for main_category in os.listdir(root_dir):
 output_file = "pdf_list.json"
 with open(output_file, "w") as f:
     json.dump(pdf_list, f, indent=4)
-
-
-# pdf_path = os.path.join("data",info[1])
-
-
-
