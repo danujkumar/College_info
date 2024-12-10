@@ -51,27 +51,22 @@ years = [str(year) for year in range(2017, 2025)]
 
 pdf_list = []
 
-for main_category in os.listdir(root_dir):
-    main_category_path = os.path.join(root_dir, main_category)
-    print(main_category_path)
-    if os.path.isdir(main_category_path): 
-        for year in years:
-            year_dict = {"year": year, "files": []}  
-            for college in os.listdir(main_category_path):  
-                college_path = os.path.join(main_category_path, college)
-                if os.path.isdir(college_path):  
-                    pdf_path = os.path.join(college_path, f"{year}.pdf")
-                    if os.path.isfile(pdf_path):  
-                        year_dict["files"].append({
-                            "file": pdf_path,
-                            "college": college,
-                            "category": main_category  
-                        })
-            pdf_files = year_dict['files']
-            excel(pdf_files, year, main_category_path)
-
-
-
-output_file = "pdf_list.json"
-with open(output_file, "w") as f:
-    json.dump(pdf_list, f, indent=4)
+def scrap_pdf():
+    for main_category in os.listdir(root_dir):
+        main_category_path = os.path.join(root_dir, main_category)
+        print(main_category_path)
+        if os.path.isdir(main_category_path): 
+            for year in years:
+                year_dict = {"year": year, "files": []}  
+                for college in os.listdir(main_category_path):  
+                    college_path = os.path.join(main_category_path, college)
+                    if os.path.isdir(college_path):  
+                        pdf_path = os.path.join(college_path, f"{year}.pdf")
+                        if os.path.isfile(pdf_path):  
+                            year_dict["files"].append({
+                                "file": pdf_path,
+                                "college": college,
+                                "category": main_category  
+                            })
+                pdf_files = year_dict['files']
+                excel(pdf_files, year, main_category_path)
