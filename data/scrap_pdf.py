@@ -43,7 +43,7 @@ def excel(pdf_files, years, location):
                         current_col += len(df.columns) + 1
             current_row = max_row_used + 2
     wb.save(output_path)
-    print(f"Model saved for {year}")
+    print(f"Model saved for {years}")
 
 root_dir = "data"
 
