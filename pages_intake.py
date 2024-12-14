@@ -1,7 +1,6 @@
 import os
 import requests
 import re
-from datetime import datetime
 
 # List of URLs to scrape
 urls_univ = [
@@ -116,6 +115,17 @@ urls_open = [
     "https://www.nirfindia.org/Rankings/2024/OPENUNIVERSITYRanking.html"
 ]
 
+urls_overall=[
+    "https://www.nirfindia.org/Rankings/2017/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2018/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2019/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2020/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2021/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2022/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2023/OverallRanking.html",
+    "https://www.nirfindia.org/Rankings/2024/OverallRanking.html"
+]
+
 urls_skill = [
     "https://www.nirfindia.org/Rankings/2024/SKILLUNIVERSITYRanking.html"
 ]
@@ -124,6 +134,7 @@ urls_state = [
     "https://www.nirfindia.org/Rankings/2024/STATEPUBLICUNIVERSITYRanking.html"
 ]
 urls = {
+    "Overall":urls_overall,
     "University":urls_univ,
     "Engineering":urls_engg,
     "Management": urls_mgmt,

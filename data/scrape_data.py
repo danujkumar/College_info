@@ -2,7 +2,6 @@ import os
 import re
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from openpyxl import load_workbook
 import pandas as pd
 import requests
 
@@ -12,7 +11,7 @@ def excel_creater(directory, file_name, y, data):
     # Create a MultiIndex DataFrame
     sorted_years = sorted(y)
     columns = pd.MultiIndex.from_tuples(
-        [(year, metric) for year in sorted_years for metric in ["TLR", "RPC", "GO", "OI", "Perception", "Rank", "Score"]],
+        [(year, metric) for year in sorted_years for metric in ["TLR", "RPC", "GO", "OI", "Perception","City","State","Rank", "Score", "Link"]],
         names=["Year", "Metric"]
     )
 
@@ -20,8 +19,8 @@ def excel_creater(directory, file_name, y, data):
     for college, year_data in data.items():
         row = [college]
         for year in sorted_years:
-            year_info = year_data.get(year, {"TLR": None, "RPC": None, "GO": None, "OI": None, "Perception": None, "Rank": None, "Score":None})
-            row.extend([year_info["TLR"], year_info["RPC"], year_info["GO"], year_info["OI"], year_info["Perception"], year_info["Rank"], year_info["Score"]])
+            year_info = year_data.get(year, {"TLR": None, "RPC": None, "GO": None, "OI": None, "Perception": None, "City":None, "State": None, "Rank": None, "Score":None, "Link":None})
+            row.extend([year_info["TLR"], year_info["RPC"], year_info["GO"], year_info["OI"], year_info["Perception"],year_info["City"],year_info["State"],year_info["Rank"], year_info["Score"], year_info["Link"]])
         df_data.append(row)
 
     df = pd.DataFrame(df_data, columns=pd.MultiIndex.from_product([["College"], [""]]).append(columns))
@@ -60,7 +59,7 @@ def scrap_data():
             for row in rows:
                 try:
                     name_td = row.find_all("td")
-                    if len(name_td) < 2:
+                    if len(name_td) < 4:
                         continue
                     college_name = name_td[1].get_text(strip=True).split("More Details")[0].strip()
 
@@ -78,6 +77,11 @@ def scrap_data():
                     oi = scores[3].text.strip()
                     perception = scores[4].text.strip()
 
+
+                    #Extracting city and state
+                    city = name_td[-4].get_text(strip=True)
+                    state = name_td[-3].get_text(strip=True)
+
                     # Extract Score using class "sorting_1"
                     rank_td = name_td[-1]
                     rank = rank_td.get_text(strip=True)
@@ -87,6 +91,7 @@ def scrap_data():
 
                     year = file_name.split('.')[0]
                     years.add(year)
+
 
                     pdf_link_tag = row.find("a", href=lambda x: x and x.endswith(".pdf"))
                     pdf_url = ""
@@ -120,14 +125,16 @@ def scrap_data():
                             "GO": go,
                             "OI": oi,
                             "Perception": perception,
+                            "City":city,
+                            "State":state,
                             "Rank":rank,
                             "Score": score,
+                            "Link":pdf_url,
                     }
                 except Exception as e:
                     print(f"Error processing row in file {file_name}: {e}")
             
             excel_creater(os.path.join("data",info[1]),info[1],years,all_data)
-
 
 
 print("Data extracted and saved to 'nirf_report.xlsx'")
